@@ -1,0 +1,151 @@
+<Window x:Class="PCLDownloadUnlock.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PCL 下载解锁" Height="720" Width="840" MinHeight="620" MinWidth="760"
+        WindowStartupLocation="CenterScreen" Background="#F3F5F9" Icon="app.ico"
+        FontFamily="Microsoft YaHei UI" FontSize="13"
+        AllowDrop="True" Drop="OnDrop" DragOver="OnDragOver"
+        UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
+    <Grid Margin="22,18,22,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 标题 -->
+        <Grid Grid.Row="0">
+            <StackPanel>
+                <TextBlock Text="PCL 下载解锁" FontSize="25" FontWeight="Bold" Foreground="#111827" />
+                <TextBlock Text="解除 PCL CE 在中国大陆地区的下载 / 安装限制（二进制 IL 补丁，不修改功能代码之外的任何内容）"
+                           FontSize="12.5" Foreground="#6B7280" Margin="0,6,0,0" TextWrapping="Wrap" />
+            </StackPanel>
+            <TextBlock x:Name="VersionText" Text="v1.1.0" FontSize="12" Foreground="#9AA3B2"
+                       HorizontalAlignment="Right" VerticalAlignment="Top" />
+        </Grid>
+
+        <!-- 目标文件 -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,14,0,0">
+            <StackPanel>
+                <TextBlock Text="目标文件" Style="{StaticResource FieldLabel}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="TargetBox" Style="{StaticResource PathBox}" TextChanged="OnTargetChanged" />
+                    <Button Grid.Column="1" x:Name="BrowseButton" Content="浏览…" Style="{StaticResource SecondaryButton}"
+                            Margin="10,0,0,0" Click="OnBrowse" />
+                </Grid>
+                <TextBlock Text="提示：可以直接把 PCL2_CE_x64.exe 拖进这个窗口"
+                           FontSize="11.5" Foreground="#9AA3B2" Margin="0,8,0,0" />
+            </StackPanel>
+        </Border>
+
+        <!-- 状态 -->
+        <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,12,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="StatusBadge" CornerRadius="10" Background="#F1F3F7" Padding="16,10" VerticalAlignment="Center"
+                        MinWidth="150">
+                    <StackPanel>
+                        <TextBlock x:Name="StatusBadgeText" Text="未检测" FontSize="16" FontWeight="SemiBold"
+                                   Foreground="#6B7280" />
+                        <TextBlock x:Name="StatusBadgeSub" Text="请选择目标文件" FontSize="11.5" Foreground="#8A94A6"
+                                   Margin="0,3,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Grid Grid.Column="1" Margin="18,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="PCL 版本" Style="{StaticResource FieldLabel}" />
+                        <TextBlock x:Name="VersionValue" Text="—" Style="{StaticResource FieldValue}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="1">
+                        <TextBlock Text="文件大小" Style="{StaticResource FieldLabel}" />
+                        <TextBlock x:Name="SizeValue" Text="—" Style="{StaticResource FieldValue}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="2">
+                        <TextBlock Text="原始备份" Style="{StaticResource FieldLabel}" />
+                        <TextBlock x:Name="BackupValue" Text="—" Style="{StaticResource FieldValue}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Margin="0,10,0,0">
+                        <TextBlock Text="SHA-256" Style="{StaticResource FieldLabel}" />
+                        <TextBlock x:Name="ShaValue" Text="—" FontFamily="Consolas" FontSize="11.5"
+                                   Foreground="#6B7280" TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- 操作 -->
+        <Grid Grid.Row="3" Margin="0,14,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button x:Name="OpenFolderButton" Content="打开所在目录" Style="{StaticResource SecondaryButton}"
+                        Click="OnOpenFolder" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="RefreshButton" Content="重新检测" Style="{StaticResource SecondaryButton}"
+                        Click="OnRefresh" />
+                <Button x:Name="RevertButton" Content="还原备份" Style="{StaticResource SecondaryButton}"
+                        Margin="10,0,0,0" Click="OnRevert" />
+                <Button x:Name="ApplyButton" Content="应用补丁" Style="{StaticResource PrimaryButton}"
+                        Margin="10,0,0,0" Click="OnApply" />
+            </StackPanel>
+        </Grid>
+
+        <!-- 日志 -->
+        <Border Grid.Row="4" Style="{StaticResource CardStyle}" Margin="0,14,0,0" Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="16,12,16,6">
+                    <TextBlock Text="日志" FontSize="12" Foreground="#6B7280" VerticalAlignment="Center" />
+                    <Button Content="清空" HorizontalAlignment="Right" Style="{StaticResource GhostButton}"
+                            Height="26" Padding="10,0" FontSize="12" Click="OnClearLog" />
+                </Grid>
+
+                <ProgressBar x:Name="BusyBar" Grid.Row="1" Height="3" IsIndeterminate="True" BorderThickness="0"
+                             Foreground="{StaticResource AccentBrush}" Background="#EEF2FC" Visibility="Collapsed" />
+
+                <TextBox x:Name="LogBox" Grid.Row="2" IsReadOnly="True" BorderThickness="0" Background="Transparent"
+                         FontFamily="Consolas, Microsoft YaHei UI" FontSize="12" Margin="12,4,12,12"
+                         VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                         TextWrapping="NoWrap" />
+            </Grid>
+        </Border>
+
+        <!-- 页脚 -->
+        <TextBlock Grid.Row="5" Margin="2,12,2,0" FontSize="11.5" Foreground="#8A94A6" TextWrapping="Wrap">
+            <Run Text="仅供学习研究，请自行承担风险；请勿用于商业用途。" />
+            <Hyperlink NavigateUri="https://github.com/PCL-Community/PCL-CE/pull/3673" RequestNavigate="OnNavigate">
+                <Run Text="限制逻辑来自 PCL-CE PR #3673" />
+            </Hyperlink>
+            <Run Text=" · " />
+            <Hyperlink NavigateUri="https://github.com/ailixiyaX/PCLDownloadUnlock" RequestNavigate="OnNavigate">
+                <Run Text="GitHub 项目主页" />
+            </Hyperlink>
+        </TextBlock>
+    </Grid>
+</Window>

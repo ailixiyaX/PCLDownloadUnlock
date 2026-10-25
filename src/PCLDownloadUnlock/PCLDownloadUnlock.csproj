@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>PCLDownloadUnlock</AssemblyName>
+    <RootNamespace>PCLDownloadUnlock</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Version>1.1.0</Version>
+    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <Product>PCL 下载解锁</Product>
+    <Company>ailixiyaX</Company>
+    <Description>解除 PCL CE 在中国大陆地区的下载 / 安装限制</Description>
+    <Copyright>Copyright (c) 2026 ailixiyaX</Copyright>
+    <SatelliteResourceLanguages>zh-Hans;en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <PublishReadyToRun>false</PublishReadyToRun>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="app.ico" />
+  </ItemGroup>
+
+</Project>
