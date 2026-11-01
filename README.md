@@ -7,6 +7,8 @@
 
 ![界面截图](docs/gui.png)
 
+**直接下载**：[Releases](https://github.com/ailixiyaX/PCLDownloadUnlock/releases/latest)（Windows x64 单文件，无需安装 .NET）
+
 ## 它做了什么
 
 PCL-CE 的 [PR #3673](https://github.com/PCL-Community/PCL-CE/pull/3673) 在 2.15.1 里引入了区域限制：
